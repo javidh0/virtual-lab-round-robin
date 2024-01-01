@@ -1,53 +1,74 @@
+import { setTimeout } from "timers/promises";
+
+async function sleep() {
+	await setTimeout(4000); // Wait for one second
+  }
+
 class RoundRobin{
     constructor(processes, burst_time, quantum){
         this.processes = processes;
         this.burst_time = burst_time;
         this.quantum = quantum;
         this.output_array = [];
+		let n = this.processes.length;
+		this.rem_bt = new Array(n).fill(0);
+		this.t = 0;
+		this.wt = new Array(n).fill(0)
+		this.tat = new Array(n).fill(0);
+		
+		for (let i = 0; i < n; i++)
+			this.rem_bt[i] = this.burst_time[i];
     }
 
-    findavgTime () {
+    async findavgTime () {
         let processes = this.processes;
         let n = processes.length;
         let bt = this.burst_time;
         let quantum = this.quantum;
 
-		let wt = new Array(n).fill(0), tat = new Array(n).fill(0);
+		
 		let total_wt = 0, total_tat = 0;
 
-		findWaitingTime(processes, n, bt, wt, quantum);
-
-		findTurnAroundTime(processes, n, bt, wt, tat);
-
-		for (let i = 0; i < n; i++) {
-			total_wt = total_wt + wt[i];
-			total_tat = total_tat + tat[i];
-
-			// console.log(`${i + 1} ${bt[i]} ${wt[i]} ${tat[i]}`);
-            let temp = [i+1, bt[i], wt[i], tat[i]];
-            this.output_array.push(temp);
+		while(1){
+			this.findWaitingTime();
+			console.log(this.rem_bt);
+			await setTimeout(2000);
 		}
 
-		// console.log(`Average waiting time = ${total_wt / n}`);
-		// console.log(`Average turn around time = ${total_tat / n}`);
-        return this.output_array;
+		this.findTurnAroundTime();
+
+		// for (let i = 0; i < n; i++) {
+		// 	total_wt = total_wt + wt[i];
+		// 	total_tat = total_tat + tat[i];
+
+		// 	// console.log(`${i + 1} ${bt[i]} ${wt[i]} ${tat[i]}`);
+        //     let temp = [i+1, bt[i], wt[i], tat[i]];
+        //     this.output_array.push(temp);
+		// }
+        // return this.output_array;
 	}
 
-    findTurnAroundTime (processes, n, bt, wt, tat) {
+    findTurnAroundTime () {
+		let n = this.processes.length;
+		let bt = this.burst_time;
+		let wt = this.wt;
+		let tat = this.tat;
+
 		for (let i = 0; i < n; i++)
 			tat[i] = bt[i] + wt[i];
 	}
 
-    findWaitingTime (processes, n, bt, wt, quantum) {
-		let rem_bt = new Array(n).fill(0);
-		for (let i = 0; i < n; i++)
-			rem_bt[i] = bt[i];
+    findWaitingTime () {
+		let n = this.processes.length;
+		let bt = this.burst_time;
+		let quantum = this.quantum;
+		let rem_bt = this.rem_bt;
+		let wt = this.wt;
 
-		let t = 0; 
+		let t = this.t; 
 
 		while (1) {
 			let done = true;
-
 			for (let i = 0; i < n; i++) {
 				if (rem_bt[i] > 0) {
 					done = false; 
@@ -64,13 +85,17 @@ class RoundRobin{
 						rem_bt[i] = 0;
 					}
 				}
+				
 			}
-
-			if (done == true)
-				break;
+			break;
+			//console.log(rem_bt);
+			//console.log(wt);
 		}
 	}
 }
 
-obj = new RoundRobin(processes, burst_time, 2);
+let processes = [1,2,3,4];
+let burst_time = [5,2,10,2];
+
+let obj = new RoundRobin(processes, burst_time, 2);
 console.log(obj.findavgTime());
