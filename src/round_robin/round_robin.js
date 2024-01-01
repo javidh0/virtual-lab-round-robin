@@ -7,7 +7,7 @@ async function sleep() {
 class RoundRobin{
     constructor(processes, burst_time, quantum){
         this.processes = processes;
-        this.burst_time = burst_time;
+        this.bt = burst_time;
         this.quantum = quantum;
         this.output_array = [];
 		let n = this.processes.length;
@@ -15,27 +15,31 @@ class RoundRobin{
 		this.t = 0;
 		this.wt = new Array(n).fill(0)
 		this.tat = new Array(n).fill(0);
+		this.done = false;
 		
 		for (let i = 0; i < n; i++)
-			this.rem_bt[i] = this.burst_time[i];
+			this.rem_bt[i] = this.bt[i];
     }
 
     async findavgTime () {
         let processes = this.processes;
-        let n = processes.length;
-        let bt = this.burst_time;
-        let quantum = this.quantum;
-
 		
 		let total_wt = 0, total_tat = 0;
 
-		while(1){
+		while(1 && !this.done){
+			console.log(this.wt);
+			console.log(this.tat);
+			console.log("\n");
 			this.findWaitingTime();
-			console.log(this.rem_bt);
-			await setTimeout(2000);
+			await setTimeout(1000);
+			this.done = true;
+			for(var i=0; i<this.rem_bt.length; i++){
+				if(this.rem_bt[i] == 0){
+					this.tat[i] = this.bt[i] + this.wt[i];
+				}else{this.done = false;}
+			}
 		}
 
-		this.findTurnAroundTime();
 
 		// for (let i = 0; i < n; i++) {
 		// 	total_wt = total_wt + wt[i];
@@ -60,29 +64,27 @@ class RoundRobin{
 
     findWaitingTime () {
 		let n = this.processes.length;
-		let bt = this.burst_time;
 		let quantum = this.quantum;
-		let rem_bt = this.rem_bt;
-		let wt = this.wt;
+
 
 		let t = this.t; 
 
 		while (1) {
 			let done = true;
 			for (let i = 0; i < n; i++) {
-				if (rem_bt[i] > 0) {
+				if (this.rem_bt[i] > 0) {
 					done = false; 
 
-					if (rem_bt[i] > quantum) {
-						t += quantum;
-						rem_bt[i] -= quantum;
+					if (this.rem_bt[i] > quantum) {
+						this.t += quantum;
+						this.rem_bt[i] -= quantum;
 					}
 
 					else {
-						t = t + rem_bt[i];
-						wt[i] = t - bt[i];
+						this.t = this.t + this.rem_bt[i];
+						this.wt[i] = this.t - this.bt[i];
 
-						rem_bt[i] = 0;
+						this.rem_bt[i] = 0;
 					}
 				}
 				
