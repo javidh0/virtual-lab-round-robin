@@ -1,9 +1,3 @@
-import { setTimeout } from "timers/promises";
-
-async function sleep() {
-	await setTimeout(4000); // Wait for one second
-  }
-
 class RoundRobin{
     constructor(processes, burst_time, quantum){
         this.processes = processes;
@@ -18,25 +12,11 @@ class RoundRobin{
 		this.done = false;
 		this.temp_flg = true;
 		this.i = 0;
+		this.completed = [];
 
 		for (let i = 0; i < n; i++)
 			this.rem_bt[i] = this.bt[i];
     }
-
-    async findavgTime () {
-		
-		let total_wt = 0, total_tat = 0;
-		console.log(this.wt);
-		console.log(this.tat);
-		while(1 && !this.done){
-			
-			console.log("\n");
-			this.itter();
-			await setTimeout(1000);
-			console.log(this.wt);
-			console.log(this.tat);
-		}
-	}
 
     itter () {
 		let n = this.processes.length;
@@ -57,6 +37,7 @@ class RoundRobin{
 
 				this.rem_bt[i] = 0;
 				this.tat[i] = this.bt[i] + this.wt[i];
+				this.completed.push(processes[i]);
 			}
 		}
 		this.i++;
@@ -74,8 +55,14 @@ class RoundRobin{
 			this.rem_bt,
 			this.wt,
 			this.tat,
-			this.done
+			this.completed
 		]
+	}
+	next(){
+		if(obj.done) return [];
+		let temp = this.itter();
+		if(temp[0]) return temp.slice(1);
+		else return this.next();
 	}
 }
 
@@ -83,7 +70,7 @@ let processes = [1,2,3];
 let burst_time = [5,2,10];
 
 let obj = new RoundRobin(processes, burst_time, 2);
+
 while(!obj.done){
-	let temp = obj.itter();
-	if(temp[0]) console.log(temp.slice(1));
+	console.log(obj.next());
 }
