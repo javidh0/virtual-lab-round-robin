@@ -16,88 +16,74 @@ class RoundRobin{
 		this.wt = new Array(n).fill(0)
 		this.tat = new Array(n).fill(0);
 		this.done = false;
-		
+		this.temp_flg = true;
+		this.i = 0;
+
 		for (let i = 0; i < n; i++)
 			this.rem_bt[i] = this.bt[i];
     }
 
     async findavgTime () {
-        let processes = this.processes;
 		
 		let total_wt = 0, total_tat = 0;
-
+		console.log(this.wt);
+		console.log(this.tat);
 		while(1 && !this.done){
+			
+			console.log("\n");
+			this.itter();
+			await setTimeout(1000);
 			console.log(this.wt);
 			console.log(this.tat);
-			console.log("\n");
-			this.findWaitingTime();
-			await setTimeout(1000);
-			this.done = true;
-			for(var i=0; i<this.rem_bt.length; i++){
-				if(this.rem_bt[i] == 0){
-					this.tat[i] = this.bt[i] + this.wt[i];
-				}else{this.done = false;}
-			}
 		}
-
-
-		// for (let i = 0; i < n; i++) {
-		// 	total_wt = total_wt + wt[i];
-		// 	total_tat = total_tat + tat[i];
-
-		// 	// console.log(`${i + 1} ${bt[i]} ${wt[i]} ${tat[i]}`);
-        //     let temp = [i+1, bt[i], wt[i], tat[i]];
-        //     this.output_array.push(temp);
-		// }
-        // return this.output_array;
 	}
 
-    findTurnAroundTime () {
-		let n = this.processes.length;
-		let bt = this.burst_time;
-		let wt = this.wt;
-		let tat = this.tat;
-
-		for (let i = 0; i < n; i++)
-			tat[i] = bt[i] + wt[i];
-	}
-
-    findWaitingTime () {
+    itter () {
 		let n = this.processes.length;
 		let quantum = this.quantum;
-
-
-		let t = this.t; 
-
-		while (1) {
-			let done = true;
-			for (let i = 0; i < n; i++) {
-				if (this.rem_bt[i] > 0) {
-					done = false; 
-
-					if (this.rem_bt[i] > quantum) {
-						this.t += quantum;
-						this.rem_bt[i] -= quantum;
-					}
-
-					else {
-						this.t = this.t + this.rem_bt[i];
-						this.wt[i] = this.t - this.bt[i];
-
-						this.rem_bt[i] = 0;
-					}
-				}
-				
+		
+		let i = this.i;
+		let rem_bt_prev = this.rem_bt[i];
+		if (this.rem_bt[i] > 0) {
+			this.temp_flg = false;
+			if (this.rem_bt[i] > quantum) {
+				this.t += quantum;
+				this.rem_bt[i] -= quantum;
 			}
-			break;
-			//console.log(rem_bt);
-			//console.log(wt);
+
+			else {
+				this.t = this.t + this.rem_bt[i];
+				this.wt[i] = this.t - this.bt[i];
+
+				this.rem_bt[i] = 0;
+				this.tat[i] = this.bt[i] + this.wt[i];
+			}
 		}
+		this.i++;
+		if(this.i+1 > n) {
+			this.i = 0;
+			this.done = this.temp_flg;
+			this.temp_flg = true
+		}
+		return [
+			rem_bt_prev != 0,
+			this.t,
+			i,
+			this.processes,
+			this.bt,
+			this.rem_bt,
+			this.wt,
+			this.tat,
+			this.done
+		]
 	}
 }
 
-let processes = [1,2,3,4];
-let burst_time = [5,2,10,2];
+let processes = [1,2,3];
+let burst_time = [5,2,10];
 
 let obj = new RoundRobin(processes, burst_time, 2);
-console.log(obj.findavgTime());
+while(!obj.done){
+	let temp = obj.itter();
+	if(temp[0]) console.log(temp.slice(1));
+}
