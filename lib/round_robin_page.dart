@@ -53,6 +53,25 @@ class RoundRobinBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: getWidth(25, context),
+          child: const ProcessAndQuantum(),
+        ),
+      ],
+    );
+  }
+}
+
+class ProcessAndQuantum extends StatelessWidget {
+  const ProcessAndQuantum({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
