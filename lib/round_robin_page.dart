@@ -53,14 +53,66 @@ class RoundRobinBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        SizedBox(
-          width: getWidth(25, context),
-          child: const ProcessAndQuantum(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: getWidth(25, context),
+              child: const ProcessAndQuantum(),
+            ),
+            SizedBox(
+              height: getHeight(55, context),
+              child: const VerticalDivider(
+                endIndent: 20,
+                indent: 20,
+                width: 1,
+              ),
+            ),
+          ],
+        ),
+        Container(
+          height: getHeight(30, context),
+          width: getWidth(99.99, context),
+          color: const Color.fromRGBO(51, 26, 83, 1),
         ),
       ],
+    );
+  }
+}
+
+class TimeInputWidget extends StatelessWidget {
+  const TimeInputWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
+
+class MyInputFieldWidget extends StatelessWidget {
+  const MyInputFieldWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 150,
+      decoration: BoxDecoration(
+          color: const Color.fromRGBO(217, 217, 217, 1),
+          borderRadius: BorderRadius.circular(20)),
+      child: TextField(
+        style: text_1,
+        textAlign: TextAlign.center,
+        decoration: InputDecoration(
+          border: const OutlineInputBorder().copyWith(
+            borderRadius: BorderRadius.circular(20),
+            borderSide: BorderSide.none,
+          ),
+          hintText: '0',
+        ),
+      ),
     );
   }
 }
@@ -90,13 +142,9 @@ class ProcessAndQuantum extends StatelessWidget {
               ),
               const InputsFieldWidget(),
               const MySubmitButton(),
+              const MyInputFieldWidget(),
             ],
           ),
-        ),
-        Container(
-          height: getHeight(30, context),
-          width: getWidth(99.99, context),
-          color: const Color.fromRGBO(51, 26, 83, 1),
         ),
       ],
     );
@@ -159,7 +207,7 @@ class _InputsFieldWidgetState extends State<InputsFieldWidget> {
               Padding(
                 padding: const EdgeInsets.only(top: 25),
                 child: Container(
-                  width: 250,
+                  width: getWidth(15, context),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: const Color.fromRGBO(217, 217, 217, 1),
@@ -187,7 +235,7 @@ class _InputsFieldWidgetState extends State<InputsFieldWidget> {
               Padding(
                 padding: const EdgeInsets.only(top: 25),
                 child: Container(
-                  width: 250,
+                  width: getWidth(15, context),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: const Color.fromRGBO(217, 217, 217, 1),
