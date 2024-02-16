@@ -14,9 +14,11 @@ class InputData with ChangeNotifier {
 
   void setProcess(int value) {
     noOfProcess = value;
+    notifyListeners();
   }
 
   void setQuantum(int value) {
     quantumTime = value;
+    notifyListeners();
   }
 }
