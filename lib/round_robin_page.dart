@@ -71,6 +71,7 @@ class RoundRobinBody extends StatelessWidget {
                 width: 1,
               ),
             ),
+            const TimeInputWidget(),
           ],
         ),
         Container(
@@ -88,7 +89,33 @@ class TimeInputWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Container(
+      padding: const EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        color: const Color.fromRGBO(217, 217, 217, 1),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        children: buildInputFields(context),
+      ),
+    );
+  }
+}
+
+class DummyTest extends StatelessWidget {
+  const DummyTest({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const Row(
+      children: [
+        MyInputFieldWidget(),
+        MyInputFieldWidget(),
+        MyInputFieldWidget(),
+      ],
+    );
   }
 }
 
@@ -97,20 +124,22 @@ class MyInputFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 150,
-      decoration: BoxDecoration(
-          color: const Color.fromRGBO(217, 217, 217, 1),
-          borderRadius: BorderRadius.circular(20)),
-      child: TextField(
-        style: text_1,
-        textAlign: TextAlign.center,
-        decoration: InputDecoration(
-          border: const OutlineInputBorder().copyWith(
-            borderRadius: BorderRadius.circular(20),
-            borderSide: BorderSide.none,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        width: 150,
+        decoration: BoxDecoration(
+            color: Colors.white, borderRadius: BorderRadius.circular(20)),
+        child: TextField(
+          style: text_1,
+          textAlign: TextAlign.center,
+          decoration: InputDecoration(
+            border: const OutlineInputBorder().copyWith(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: BorderSide.none,
+            ),
+            hintText: '0',
           ),
-          hintText: '0',
         ),
       ),
     );
@@ -283,4 +312,19 @@ List<DropdownMenuItem<dynamic>> buildDropDownItems(int n) {
     dropDowns.add(temp);
   }
   return dropDowns;
+}
+
+List<Widget> buildInputFields(BuildContext context) {
+  List<Widget> tr = [];
+  for (int i = 0; i < context.watch<InputData>().getProcess(); i++) {
+    Widget temp = const Row(
+      children: [
+        MyInputFieldWidget(),
+        MyInputFieldWidget(),
+        MyInputFieldWidget(),
+      ],
+    );
+    tr.add(temp);
+  }
+  return tr;
 }
