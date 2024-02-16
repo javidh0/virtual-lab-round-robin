@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:os_virtual_lab/utils/funtions.dart';
+import 'package:os_virtual_lab/utils/providers.dart';
+import 'package:provider/provider.dart';
 import 'utils/text.dart';
 
 class RoundRobinPage extends StatelessWidget {
@@ -50,23 +53,33 @@ class RoundRobinBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 20),
-            child: Text(
-              "Operating System > Round Robin",
-              style: text_1.copyWith(fontWeight: FontWeight.bold),
-              textAlign: TextAlign.start,
-            ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: Text(
+                  "Operating System > Round Robin",
+                  style: text_1.copyWith(fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.start,
+                ),
+              ),
+              const InputsFieldWidget(),
+              const MySubmitButton(),
+            ],
           ),
-          const InputsFieldWidget(),
-          const MySubmitButton(),
-        ],
-      ),
+        ),
+        Container(
+          height: getHeight(30, context),
+          width: getWidth(99.99, context),
+          color: const Color.fromRGBO(51, 26, 83, 1),
+        ),
+      ],
     );
   }
 }
@@ -133,13 +146,13 @@ class _InputsFieldWidgetState extends State<InputsFieldWidget> {
                     color: const Color.fromRGBO(217, 217, 217, 1),
                   ),
                   child: DropdownButton(
-                    value: noOfProcess,
+                    value: context.watch<InputData>().getProcess(),
                     borderRadius: BorderRadius.circular(10),
                     items: buildDropDownItems(10),
                     isExpanded: true,
                     onChanged: (value) {
                       setState(() {
-                        noOfProcess = value;
+                        context.read<InputData>().setProcess(value);
                       });
                     },
                   ),
@@ -161,13 +174,13 @@ class _InputsFieldWidgetState extends State<InputsFieldWidget> {
                     color: const Color.fromRGBO(217, 217, 217, 1),
                   ),
                   child: DropdownButton(
-                    value: qTime,
+                    value: context.watch<InputData>().quantumTime,
                     borderRadius: BorderRadius.circular(10),
                     items: buildDropDownItems(10),
                     isExpanded: true,
                     onChanged: (value) {
                       setState(() {
-                        qTime = value;
+                        context.read<InputData>().setQuantum(value);
                       });
                     },
                   ),
