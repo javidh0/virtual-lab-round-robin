@@ -66,8 +66,8 @@ class RoundRobinBody extends StatelessWidget {
             SizedBox(
               height: getHeight(55, context),
               child: const VerticalDivider(
-                endIndent: 20,
-                indent: 20,
+                endIndent: 15,
+                indent: 15,
                 width: 1,
               ),
             ),
@@ -89,32 +89,26 @@ class TimeInputWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(15),
-      decoration: BoxDecoration(
-        color: const Color.fromRGBO(217, 217, 217, 1),
-        borderRadius: BorderRadius.circular(20),
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.all(15),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(0),
+        ),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: getWidth(20, context)),
+          child: Container(
+            width: getWidth(10, context),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: const Color.fromRGBO(217, 217, 217, 1),
+            ),
+            child: Column(
+              children: buildInputFields(context),
+            ),
+          ),
+        ),
       ),
-      child: Column(
-        children: buildInputFields(context),
-      ),
-    );
-  }
-}
-
-class DummyTest extends StatelessWidget {
-  const DummyTest({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return const Row(
-      children: [
-        MyInputFieldWidget(),
-        MyInputFieldWidget(),
-        MyInputFieldWidget(),
-      ],
     );
   }
 }
@@ -188,7 +182,7 @@ class MySubmitButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: SizedBox(
-        width: 250,
+        width: getWidth(15, context),
         height: 40,
         child: ElevatedButton(
           onPressed: () {},
@@ -242,13 +236,13 @@ class _InputsFieldWidgetState extends State<InputsFieldWidget> {
                     color: const Color.fromRGBO(217, 217, 217, 1),
                   ),
                   child: DropdownButton(
-                    value: context.watch<InputData>().getProcess(),
+                    value: context.watch<InputData>().getQuantumn(),
                     borderRadius: BorderRadius.circular(10),
                     items: buildDropDownItems(10),
                     isExpanded: true,
                     onChanged: (value) {
                       setState(() {
-                        context.read<InputData>().setProcess(value);
+                        context.read<InputData>().setQuantum(value);
                       });
                     },
                   ),
@@ -270,13 +264,13 @@ class _InputsFieldWidgetState extends State<InputsFieldWidget> {
                     color: const Color.fromRGBO(217, 217, 217, 1),
                   ),
                   child: DropdownButton(
-                    value: context.watch<InputData>().quantumTime,
+                    value: context.watch<InputData>().getProcess(),
                     borderRadius: BorderRadius.circular(10),
                     items: buildDropDownItems(10),
                     isExpanded: true,
                     onChanged: (value) {
                       setState(() {
-                        context.read<InputData>().setQuantum(value);
+                        context.read<InputData>().setProcess(value);
                       });
                     },
                   ),
@@ -316,15 +310,54 @@ List<DropdownMenuItem<dynamic>> buildDropDownItems(int n) {
 
 List<Widget> buildInputFields(BuildContext context) {
   List<Widget> tr = [];
-  for (int i = 0; i < context.watch<InputData>().getProcess(); i++) {
-    Widget temp = const Row(
+  Widget title = SizedBox(
+    width: getWidth(32.5, context),
+    child: const Row(
       children: [
-        MyInputFieldWidget(),
-        MyInputFieldWidget(),
-        MyInputFieldWidget(),
+        TitleText(text: "ProcessId"),
+        TitleText(text: "Arrival Time"),
+        TitleText(text: "Burst Time"),
       ],
+    ),
+  );
+  tr.add(title);
+  for (int i = 0; i < context.watch<InputData>().getProcess(); i++) {
+    Widget temp = SizedBox(
+      width: getWidth(32.5, context),
+      child: const Row(
+        children: [
+          MyInputFieldWidget(),
+          MyInputFieldWidget(),
+          MyInputFieldWidget(),
+        ],
+      ),
     );
     tr.add(temp);
   }
   return tr;
+}
+
+class TitleText extends StatelessWidget {
+  const TitleText({
+    super.key,
+    required this.text,
+  });
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SizedBox(
+        width: 150,
+        child: Center(
+          child: Text(
+            text,
+            style: text_1,
+          ),
+        ),
+      ),
+    );
+  }
 }
