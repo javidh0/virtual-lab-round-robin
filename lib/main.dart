@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:os_virtual_lab/execute_page.dart';
 import 'package:os_virtual_lab/utils/providers.dart';
 import 'package:provider/provider.dart';
 import 'round_robin_page.dart';
@@ -19,8 +20,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: RoundRobinPage(),
+    return MaterialApp(
+      initialRoute: '/',
+      routes: {
+        "/": (context) => const RoundRobinPage(),
+        "/execute_page": (context) => const ExecutePage(),
+      },
     );
   }
 }
