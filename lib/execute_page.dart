@@ -77,7 +77,7 @@ class RoundRobinExecuteWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: getWidth(99, context),
+      width: getWidth(100, context),
       child: const Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -118,7 +118,13 @@ class ProcessBox extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        color: const Color.fromRGBO(135, 107, 170, 1),
+        decoration: BoxDecoration(
+          color: const Color.fromRGBO(135, 107, 170, 1),
+          border: Border.all(
+            color: Colors.black,
+            width: 1,
+          ),
+        ),
         height: getHeight(10, context),
         width: getHeight(10, context),
         child: Center(
@@ -142,24 +148,30 @@ class Table extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Color.fromRGBO(217, 217, 217, 1),
-      ),
+      decoration: const BoxDecoration(),
       padding: const EdgeInsets.all(2),
       child: const Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           TableRow(
-            data: ["Col-1", "Col-2", "Col-3"],
+            data: ["Process", "AT", "BT", "CT", "TAT", "WT"],
             isPrimary: true,
           ),
           TableRow(
-            data: ["Col-1", "Col-2", "Col-3"],
+            data: ["P1", "20", "10", '12', '1', '12'],
             isPrimary: false,
           ),
           TableRow(
-            data: ["Col-1", "Col-2", "Col-3"],
+            data: ["P1", "20", "10", '12', '1', '12'],
+            isPrimary: false,
+          ),
+          TableRow(
+            data: ["P1", "20", "10", '12', '1', '12'],
+            isPrimary: false,
+          ),
+          TableRow(
+            data: ["P1", "20", "10", '12', '1', '12'],
             isPrimary: false,
           )
         ],
@@ -183,23 +195,33 @@ class TableRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
-      children: rowBuilder(data),
+      children: rowBuilder(data, context, isPrimary),
     );
   }
 }
 
-List<Widget> rowBuilder(List<String> data) {
+List<Widget> rowBuilder(List<String> data, BuildContext context, bool prim) {
   List<Widget> tr = [];
   for (int i = 0; i < data.length; i++) {
     Widget temp = Padding(
       padding: const EdgeInsets.all(1.5),
       child: Container(
+        width: getWidth(10, context),
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(0),
+          border: Border.all(
+            width: 1,
+            color: Colors.black,
+          ),
         ),
-        child: Text(data[i], style: text_1),
+        child: Text(
+          data[i],
+          style: text_1.copyWith(
+            fontWeight: prim ? FontWeight.bold : FontWeight.normal,
+          ),
+        ),
       ),
     );
     tr.add(temp);
