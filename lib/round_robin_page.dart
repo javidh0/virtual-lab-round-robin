@@ -181,7 +181,9 @@ class MySubmitButton extends StatelessWidget {
         width: getWidth(15, context),
         height: 40,
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, "/execute_page");
+          },
           child: Text(
             "Next",
             style: text_1.copyWith(
