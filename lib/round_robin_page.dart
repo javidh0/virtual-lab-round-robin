@@ -54,8 +54,19 @@ class RoundRobinBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
+        SizedBox(
+          width: getWidth(100, context),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Text(
+              "Operating System > Round Robin",
+              style: text_1.copyWith(fontWeight: FontWeight.bold),
+              textAlign: TextAlign.start,
+            ),
+          ),
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -64,7 +75,7 @@ class RoundRobinBody extends StatelessWidget {
               child: const ProcessAndQuantum(),
             ),
             SizedBox(
-              height: getHeight(55, context),
+              height: getHeight(75, context),
               child: const VerticalDivider(
                 endIndent: 15,
                 indent: 15,
@@ -73,11 +84,6 @@ class RoundRobinBody extends StatelessWidget {
             ),
             const TimeInputWidget(),
           ],
-        ),
-        Container(
-          height: getHeight(30, context),
-          width: getWidth(99.99, context),
-          color: const Color.fromRGBO(51, 26, 83, 1),
         ),
       ],
     );
@@ -100,7 +106,7 @@ class TimeInputWidget extends StatelessWidget {
           child: Container(
             width: getWidth(10, context),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(10),
               color: const Color.fromRGBO(217, 217, 217, 1),
             ),
             child: Column(
@@ -123,7 +129,7 @@ class MyInputFieldWidget extends StatelessWidget {
       child: Container(
         width: 150,
         decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(20)),
+            color: Colors.white, borderRadius: BorderRadius.circular(10)),
         child: TextField(
           style: text_1,
           textAlign: TextAlign.center,
@@ -147,25 +153,15 @@ class ProcessAndQuantum extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Padding(
-          padding: const EdgeInsets.all(20),
+          padding: EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: Text(
-                  "Operating System > Round Robin",
-                  style: text_1.copyWith(fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.start,
-                ),
-              ),
-              const InputsFieldWidget(),
-              const MySubmitButton(),
-              const MyInputFieldWidget(),
+              InputsFieldWidget(),
             ],
           ),
         ),
@@ -187,7 +183,7 @@ class MySubmitButton extends StatelessWidget {
         child: ElevatedButton(
           onPressed: () {},
           child: Text(
-            "Submit",
+            "Next",
             style: text_1.copyWith(
               fontWeight: FontWeight.bold,
               fontSize: 15,
@@ -334,6 +330,9 @@ List<Widget> buildInputFields(BuildContext context) {
     );
     tr.add(temp);
   }
+  tr.add(
+    const MySubmitButton(),
+  );
   return tr;
 }
 
