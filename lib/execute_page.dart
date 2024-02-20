@@ -110,7 +110,7 @@ class _ProcessesDisplayState extends State<ProcessesDisplay>
       duration: const Duration(seconds: 1),
       reverseDuration: const Duration(seconds: 1),
     );
-    animator = CurvedAnimation(parent: controler, curve: Curves.bounceInOut);
+    animator = CurvedAnimation(parent: controler, curve: Curves.easeIn);
     super.initState();
     animator.addListener(() {
       setState(() {
