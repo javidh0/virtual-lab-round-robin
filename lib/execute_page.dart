@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:os_virtual_lab/utils/funtions.dart';
+import 'package:os_virtual_lab/utils/providers.dart';
 import 'package:os_virtual_lab/utils/text.dart';
+import 'package:provider/provider.dart';
 
 class ExecutePage extends StatelessWidget {
   const ExecutePage({super.key});
@@ -126,20 +128,21 @@ class _ProcessesDisplayState extends State<ProcessesDisplay>
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         ElevatedButton(
-            onPressed: () {
-              controler.forward();
-            },
-            child: const Text("Next")),
+          onPressed: () {
+            controler.forward();
+          },
+          child: const Text("Next"),
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ProcessBox(opacity: 1 - opacity),
-            ProcessBox(),
-            ProcessBox(),
-            ProcessBox(),
-            ProcessBox(),
-            ProcessBox(),
-          ],
+          children: <Widget>[
+                ProcessBox(
+                  opacity: 1 - opacity,
+                  name: "X",
+                  time: "10",
+                ),
+              ] +
+              processBoxBuilder(context),
         ),
         Column(
           children: [
@@ -151,6 +154,8 @@ class _ProcessesDisplayState extends State<ProcessesDisplay>
                 padding: EdgeInsets.only(top: getHeight(3, context)),
                 child: ProcessBox(
                   opacity: opacity,
+                  name: "X",
+                  time: "10",
                 ),
               ),
             ),
@@ -166,12 +171,11 @@ class _ProcessesDisplayState extends State<ProcessesDisplay>
 }
 
 class ProcessBox extends StatelessWidget {
-  const ProcessBox({
-    super.key,
-    this.opacity = 1,
-  });
+  const ProcessBox(
+      {super.key, this.opacity = 1, required this.name, required this.time});
 
   final double opacity;
+  final String time, name;
 
   @override
   Widget build(BuildContext context) {
@@ -192,7 +196,7 @@ class ProcessBox extends StatelessWidget {
             width: getHeight(10, context),
             child: Center(
               child: Text(
-                "10",
+                time,
                 style: text_1.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
@@ -204,7 +208,7 @@ class ProcessBox extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              "P1",
+              name,
               style: text_1.copyWith(
                 fontWeight: FontWeight.bold,
                 fontSize: 15,
@@ -299,6 +303,18 @@ List<Widget> rowBuilder(List<String> data, BuildContext context, bool prim) {
           ),
         ),
       ),
+    );
+    tr.add(temp);
+  }
+  return tr;
+}
+
+List<Widget> processBoxBuilder(BuildContext context) {
+  List<Widget> tr = [];
+  for (int i = 0; i < context.read<Process>().controller.length; i++) {
+    Widget temp = ProcessBox(
+      name: context.read<Process>().id[i],
+      time: context.read<Process>().burstTime[i],
     );
     tr.add(temp);
   }
