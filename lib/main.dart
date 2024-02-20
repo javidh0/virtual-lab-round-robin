@@ -9,6 +9,7 @@ void main(List<String> args) {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => InputData()),
+        ChangeNotifierProvider(create: (_) => Process())
       ],
       child: const MyApp(),
     ),
