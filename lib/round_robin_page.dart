@@ -120,7 +120,13 @@ class TimeInputWidget extends StatelessWidget {
 }
 
 class MyInputFieldWidget extends StatelessWidget {
-  const MyInputFieldWidget({super.key});
+  const MyInputFieldWidget({
+    super.key,
+    required this.i,
+    required this.j,
+  });
+
+  final int i, j;
 
   @override
   Widget build(BuildContext context) {
@@ -131,6 +137,7 @@ class MyInputFieldWidget extends StatelessWidget {
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(10)),
         child: TextField(
+          controller: context.watch<Process>().getController(i, j),
           style: text_1,
           textAlign: TextAlign.center,
           decoration: InputDecoration(
@@ -307,6 +314,7 @@ List<DropdownMenuItem<dynamic>> buildDropDownItems(int n) {
 }
 
 List<Widget> buildInputFields(BuildContext context) {
+  context.watch<Process>().init(context.watch<InputData>().getProcess());
   List<Widget> tr = [];
   Widget title = SizedBox(
     width: getWidth(32.5, context),
@@ -322,11 +330,11 @@ List<Widget> buildInputFields(BuildContext context) {
   for (int i = 0; i < context.watch<InputData>().getProcess(); i++) {
     Widget temp = SizedBox(
       width: getWidth(32.5, context),
-      child: const Row(
+      child: Row(
         children: [
-          MyInputFieldWidget(),
-          MyInputFieldWidget(),
-          MyInputFieldWidget(),
+          MyInputFieldWidget(i: i, j: 0),
+          MyInputFieldWidget(i: i, j: 1),
+          MyInputFieldWidget(i: i, j: 2),
         ],
       ),
     );
