@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class InputData with ChangeNotifier {
   int noOfProcess = 1;
@@ -56,12 +57,31 @@ class Process with ChangeNotifier {
   void getValue(int i, int j) {
     print(controller[i][j].text);
   }
+
+  void setBurst(int i, double val) {
+    controller[i][2].text = val.toString();
+    notifyListeners();
+  }
+
+  String getBurst(int i) {
+    print(controller[i][2].text);
+    return controller[i][2].text;
+  }
 }
 
 class RoundRobin extends ChangeNotifier {
-  int pointer = -1;
+  int pointer = 0;
   void incrementPointer({int i = 1}) {
     pointer += i;
+    notifyListeners();
+  }
+
+  void inCPUProcess(BuildContext context) {
+    int qTime = context.read<InputData>().quantumTime;
+    double val =
+        double.parse(context.read<Process>().getBurst(pointer)) - qTime;
+    if (val < 0) val = 0;
+    context.read<Process>().setBurst(pointer, val);
     notifyListeners();
   }
 

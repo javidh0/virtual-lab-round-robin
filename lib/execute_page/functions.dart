@@ -7,10 +7,15 @@ import 'package:provider/provider.dart';
 
 void runItter(BuildContext context, int ptr, AnimationController controler) {
   controler.forward();
-  Future.delayed(const Duration(seconds: 2), () {
+  Future.delayed(const Duration(seconds: 1, milliseconds: 500), () {
     controler.reverse();
+    //while (controler.isAnimating) {}
   });
-  context.read<RoundRobin>().incrementPointer();
+
+  Future.delayed(const Duration(seconds: 2), () {
+    context.read<RoundRobin>().incrementPointer();
+    context.read<RoundRobin>().inCPUProcess(context);
+  });
 }
 
 List<Widget> rowBuilder(List<String> data, BuildContext context, bool prim) {
@@ -47,8 +52,8 @@ List<Widget> processBoxBuilder(BuildContext context, double opacity) {
   int ptr = context.watch<RoundRobin>().getPointer();
   for (int i = 0; i < context.read<Process>().controller.length; i++) {
     Widget temp = ProcessBox(
-      name: context.read<Process>().id[i],
-      time: context.read<Process>().burstTime[i],
+      name: context.watch<Process>().id[i],
+      time: context.watch<Process>().getBurst(i),
       isActive: ptr == i,
       opacity: opacity,
     );
