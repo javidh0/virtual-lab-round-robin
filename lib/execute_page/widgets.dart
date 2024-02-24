@@ -52,14 +52,7 @@ class _ProcessesDisplayState extends State<ProcessesDisplay>
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-                ProcessBox(
-                  opacity: 1 - opacity,
-                  name: "X",
-                  time: "10",
-                ),
-              ] +
-              processBoxBuilder(context, 1 - opacity),
+          children: processBoxBuilder(context, 1 - opacity),
         ),
         Column(
           children: [

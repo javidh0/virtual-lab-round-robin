@@ -59,7 +59,7 @@ class Process with ChangeNotifier {
 }
 
 class RoundRobin extends ChangeNotifier {
-  int pointer = 0;
+  int pointer = -1;
   void incrementPointer({int i = 1}) {
     pointer += i;
     notifyListeners();
