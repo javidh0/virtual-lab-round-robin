@@ -5,6 +5,14 @@ import 'package:os_virtual_lab/utils/providers.dart';
 import 'package:os_virtual_lab/utils/text.dart';
 import 'package:provider/provider.dart';
 
+void runItter(BuildContext context, int ptr, AnimationController controler) {
+  controler.forward();
+  Future.delayed(const Duration(seconds: 2), () {
+    controler.reverse();
+  });
+  context.read<RoundRobin>().incrementPointer();
+}
+
 List<Widget> rowBuilder(List<String> data, BuildContext context, bool prim) {
   List<Widget> tr = [];
   for (int i = 0; i < data.length; i++) {
@@ -34,12 +42,15 @@ List<Widget> rowBuilder(List<String> data, BuildContext context, bool prim) {
   return tr;
 }
 
-List<Widget> processBoxBuilder(BuildContext context) {
+List<Widget> processBoxBuilder(BuildContext context, double opacity) {
   List<Widget> tr = [];
+  int ptr = context.watch<RoundRobin>().getPointer();
   for (int i = 0; i < context.read<Process>().controller.length; i++) {
     Widget temp = ProcessBox(
       name: context.read<Process>().id[i],
       time: context.read<Process>().burstTime[i],
+      isActive: ptr == i,
+      opacity: opacity,
     );
     tr.add(temp);
   }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:os_virtual_lab/utils/funtions.dart';
+import 'package:os_virtual_lab/utils/providers.dart';
 import 'package:os_virtual_lab/utils/text.dart';
+import 'package:provider/provider.dart';
 
 import 'functions.dart';
 
@@ -40,10 +42,11 @@ class _ProcessesDisplayState extends State<ProcessesDisplay>
       children: [
         ElevatedButton(
           onPressed: () {
-            controler.forward();
-            Future.delayed(const Duration(seconds: 2), () {
-              controler.reverse();
-            });
+            runItter(
+              context,
+              context.read<RoundRobin>().getPointer(),
+              controler,
+            );
           },
           child: const Text("Next"),
         ),
@@ -56,7 +59,7 @@ class _ProcessesDisplayState extends State<ProcessesDisplay>
                   time: "10",
                 ),
               ] +
-              processBoxBuilder(context),
+              processBoxBuilder(context, 1 - opacity),
         ),
         Column(
           children: [
@@ -68,8 +71,9 @@ class _ProcessesDisplayState extends State<ProcessesDisplay>
                 padding: EdgeInsets.only(top: getHeight(3, context)),
                 child: ProcessBox(
                   opacity: opacity,
-                  name: "X",
+                  name: "CPu",
                   time: "10",
+                  isActive: true,
                 ),
               ),
             ),
@@ -85,11 +89,17 @@ class _ProcessesDisplayState extends State<ProcessesDisplay>
 }
 
 class ProcessBox extends StatelessWidget {
-  const ProcessBox(
-      {super.key, this.opacity = 1, required this.name, required this.time});
+  const ProcessBox({
+    super.key,
+    this.opacity = 1,
+    this.isActive = false,
+    required this.name,
+    required this.time,
+  });
 
   final double opacity;
   final String time, name;
+  final bool isActive;
 
   @override
   Widget build(BuildContext context) {
@@ -100,9 +110,9 @@ class ProcessBox extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: Color.fromRGBO(135, 107, 170, opacity),
+              color: Color.fromRGBO(135, 107, 170, isActive ? opacity : 1),
               border: Border.all(
-                color: Color.fromRGBO(0, 0, 0, opacity),
+                color: Color.fromRGBO(0, 0, 0, isActive ? opacity : 1),
                 width: 1,
               ),
             ),
@@ -114,7 +124,7 @@ class ProcessBox extends StatelessWidget {
                 style: text_1.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
-                  color: Color.fromRGBO(255, 255, 255, opacity),
+                  color: Color.fromRGBO(255, 255, 255, isActive ? opacity : 1),
                 ),
               ),
             ),
@@ -126,7 +136,7 @@ class ProcessBox extends StatelessWidget {
               style: text_1.copyWith(
                 fontWeight: FontWeight.bold,
                 fontSize: 15,
-                color: Color.fromRGBO(0, 0, 0, opacity),
+                color: Color.fromRGBO(0, 0, 0, isActive ? opacity : 1),
               ),
             ),
           ),

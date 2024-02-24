@@ -80,12 +80,12 @@ class RoundRobinExecuteWidget extends StatelessWidget {
     return SizedBox(
       width: getWidth(100, context),
       height: getHeight(80, context),
-      child: Column(
+      child: const Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          const ProcessesDisplay(),
-          Table(),
+          ProcessesDisplay(),
+          MyTable(),
         ],
       ),
     );

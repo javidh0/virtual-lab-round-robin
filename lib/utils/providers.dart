@@ -57,3 +57,15 @@ class Process with ChangeNotifier {
     print(controller[i][j].text);
   }
 }
+
+class RoundRobin extends ChangeNotifier {
+  int pointer = 0;
+  void incrementPointer({int i = 1}) {
+    pointer += i;
+    notifyListeners();
+  }
+
+  int getPointer() {
+    return pointer;
+  }
+}
