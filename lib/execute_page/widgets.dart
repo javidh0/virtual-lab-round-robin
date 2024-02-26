@@ -36,41 +36,55 @@ class _ProcessesDisplayState extends State<ProcessesDisplay>
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      crossAxisAlignment: CrossAxisAlignment.center,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ElevatedButton(
-          onPressed: () {
-            runItter(
-              context,
-              context.read<RoundRobin>().getPointer(),
-              controler,
-            );
-          },
-          child: const Text("Next"),
+        Padding(
+          padding: EdgeInsets.only(left: getWidth(13.5, context)),
+          child: Text(
+            "Time = ${context.watch<RoundRobin>().timePointer.toString()} units",
+            style: text_1.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: processBoxBuilder(context, 1 - opacity),
-        ),
-        Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            MyCPU(
-              opacity: opacity,
-              name: context
-                  .read<Process>()
-                  .getId(context.read<RoundRobin>().getPointer()),
-              time: context
-                  .read<Process>()
-                  .getBurst(context.read<RoundRobin>().getPointer()),
+            ElevatedButton(
+              onPressed: () {
+                runItter(
+                  context,
+                  context.read<RoundRobin>().getPointer(),
+                  controler,
+                );
+              },
+              child: const Text("Next"),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: Text("CPU", style: text_1),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: processBoxBuilder(context, 1 - opacity),
+            ),
+            Column(
+              children: [
+                MyCPU(
+                  opacity: opacity,
+                  name: context
+                      .read<Process>()
+                      .getId(context.read<RoundRobin>().getPointer()),
+                  time: context
+                      .read<Process>()
+                      .getBurst(context.read<RoundRobin>().getPointer()),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Text("CPU", style: text_1),
+                )
+              ],
             )
           ],
-        )
+        ),
       ],
     );
   }
@@ -172,38 +186,17 @@ class MyTable extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(),
       padding: const EdgeInsets.all(2),
-      child: const Column(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          TableRow(
-            data: ["Process", "AT", "BT", "CT", "TAT", "WT"],
-            isPrimary: true,
-          ),
-          TableRow(
-            data: ["P1", "20", "10", '12', '1', '12'],
-            isPrimary: false,
-          ),
-          TableRow(
-            data: ["P1", "20", "10", '12', '1', '12'],
-            isPrimary: false,
-          ),
-          TableRow(
-            data: ["P1", "20", "10", '12', '1', '12'],
-            isPrimary: false,
-          ),
-          TableRow(
-            data: ["P1", "20", "10", '12', '1', '12'],
-            isPrimary: false,
-          )
-        ],
+        children: builderTableRow(context),
       ),
     );
   }
 }
 
-class TableRow extends StatelessWidget {
-  const TableRow({
+class MyTableRow extends StatelessWidget {
+  const MyTableRow({
     super.key,
     required this.data,
     this.isPrimary = false,
