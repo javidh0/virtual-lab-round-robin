@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:os_virtual_lab/utils/funtions.dart';
 import 'package:os_virtual_lab/utils/providers.dart';
@@ -44,8 +45,9 @@ class _ProcessesDisplayState extends State<ProcessesDisplay>
       children: [
         Padding(
           padding: EdgeInsets.only(left: getWidth(13.5, context)),
-          child: Text(
+          child: AutoSizeText(
             "Time = ${context.watch<RoundRobin>().timePointer.toString()} units",
+            minFontSize: 5,
             style: text_1.copyWith(
               fontWeight: FontWeight.bold,
             ),
@@ -62,20 +64,17 @@ class _ProcessesDisplayState extends State<ProcessesDisplay>
                   context.read<RoundRobin>().getPointer(),
                   controler,
                 );
-                Future.delayed(const Duration(seconds: 2), () {
-                  runReverse(
-                    context,
-                    context.read<RoundRobin>().getPointer(),
-                    controler,
-                  );
-                });
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF7F4EBD),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
               ),
-              child: const Text("Next"),
+              child: AutoSizeText(
+                "Next",
+                minFontSize: 5,
+                style: text_1,
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -94,7 +93,11 @@ class _ProcessesDisplayState extends State<ProcessesDisplay>
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8),
-                  child: Text("CPU", style: text_1),
+                  child: AutoSizeText(
+                    "CPU",
+                    minFontSize: 5,
+                    style: text_1,
+                  ),
                 )
               ],
             )
@@ -169,8 +172,9 @@ class ProcessBox extends StatelessWidget {
             height: getHeight(10, context),
             width: getHeight(10, context),
             child: Center(
-              child: Text(
+              child: AutoSizeText(
                 time,
+                minFontSize: 5,
                 style: text_1.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
@@ -181,8 +185,9 @@ class ProcessBox extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(
+            child: AutoSizeText(
               name,
+              minFontSize: 5,
               style: text_1.copyWith(
                 fontWeight: FontWeight.bold,
                 fontSize: 15,

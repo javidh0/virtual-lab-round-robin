@@ -1,11 +1,16 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, empty_catches
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class InputData with ChangeNotifier {
-  int noOfProcess = 1;
-  int quantumTime = 1;
+  int noOfProcess = 3;
+  int quantumTime = 2;
+
+  void init() {
+    noOfProcess = 3;
+    quantumTime = 2;
+  }
 
   int getProcess() {
     return noOfProcess;
@@ -97,12 +102,16 @@ class Process with ChangeNotifier {
       controller.add(temp);
       controller.last[0].text = "P$i";
       controller.last[1].text = "0";
-      controller.last[2].text = "0";
+      controller.last[2].text = "10";
     }
   }
 
   TextEditingController getController(int i, int j) {
-    return controller[i][j];
+    try {
+      return controller[i][j];
+    } catch (e) {
+      return TextEditingController();
+    }
   }
 
   int getN() {
@@ -114,32 +123,51 @@ class Process with ChangeNotifier {
   }
 
   void setBurst(int i, double val) {
-    controller[i][2].text = val.toString();
-    notifyListeners();
+    try {
+      controller[i][2].text = val.toString();
+
+      notifyListeners();
+    } catch (e) {}
   }
 
-  void setCompleted() {
+  void setCompleted(BuildContext context) {
     isAllCompleted = true;
+
     notifyListeners();
+    // init(context.read<Process>().id.length, context);
   }
 
   void removeProcess(int i) {
-    controller.removeAt(i);
-    id.removeAt(i);
-    arivalTime.removeAt(i);
-    burstTime.removeAt(i);
+    try {
+      controller.removeAt(i);
+      id.removeAt(i);
+      arivalTime.removeAt(i);
+      burstTime.removeAt(i);
+    } catch (e) {}
   }
 
   String getArival(int i) {
-    return controller[i][1].text;
+    try {
+      return controller[i][1].text;
+    } catch (e) {
+      return "-1";
+    }
   }
 
   String getBurst(int i) {
-    return controller[i][2].text;
+    try {
+      return controller[i][2].text;
+    } catch (e) {
+      return "-1";
+    }
   }
 
   String getId(int i) {
-    return controller[i][0].text;
+    try {
+      return controller[i][0].text;
+    } catch (e) {
+      return "-1";
+    }
   }
 }
 
@@ -148,7 +176,7 @@ class RoundRobin extends ChangeNotifier {
   void incrementPointer(BuildContext context, {int i = 1}) {
     pointer += i;
     if (context.read<Process>().getN() == 0) {
-      context.read<Process>().setCompleted();
+      context.read<Process>().setCompleted(context);
     }
     if (pointer >= context.read<Process>().getN()) {
       pointer = 0;
@@ -177,7 +205,7 @@ class RoundRobin extends ChangeNotifier {
       context.read<Process>().setBurst(pointer, val);
     }
     if (context.read<Process>().getN() == 0) {
-      context.read<Process>().setCompleted();
+      context.read<Process>().setCompleted(context);
     }
     notifyListeners();
   }

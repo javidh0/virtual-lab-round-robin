@@ -3,6 +3,7 @@ import 'package:os_virtual_lab/utils/funtions.dart';
 import 'package:os_virtual_lab/utils/providers.dart';
 import 'package:provider/provider.dart';
 import 'utils/text.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class RoundRobinPage extends StatelessWidget {
   const RoundRobinPage({super.key});
@@ -62,8 +63,9 @@ class RoundRobinBody extends StatelessWidget {
           width: getWidth(100, context),
           child: Padding(
             padding: const EdgeInsets.all(20),
-            child: Text(
+            child: AutoSizeText(
               "Operating System > Round Robin",
+              minFontSize: 10,
               style: text_1.copyWith(fontWeight: FontWeight.bold),
               textAlign: TextAlign.start,
             ),
@@ -135,7 +137,7 @@ class MyInputFieldWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        width: 150,
+        width: getWidth(9, context),
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(10)),
         child: TextField(
@@ -197,8 +199,9 @@ class MySubmitButton extends StatelessWidget {
             backgroundColor: const Color(0xFF7F4EBD),
             padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
           ),
-          child: Text(
+          child: AutoSizeText(
             "Next",
+            minFontSize: 10,
             style: text_1.copyWith(
               fontWeight: FontWeight.bold,
               fontSize: 15,
@@ -231,8 +234,9 @@ class _InputsFieldWidgetState extends State<InputsFieldWidget> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              AutoSizeText(
                 "Inputs",
+                minFontSize: 5,
                 style: text_1.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -259,8 +263,9 @@ class _InputsFieldWidgetState extends State<InputsFieldWidget> {
                   ),
                 ),
               ),
-              Text(
+              AutoSizeText(
                 "Quantum Time",
+                minFontSize: 5,
                 style: text_1.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -287,8 +292,9 @@ class _InputsFieldWidgetState extends State<InputsFieldWidget> {
                   ),
                 ),
               ),
-              Text(
+              AutoSizeText(
                 "No Proceses",
+                minFontSize: 5,
                 style: text_1.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -308,8 +314,9 @@ List<DropdownMenuItem<dynamic>> buildDropDownItems(int n) {
     var temp = DropdownMenuItem(
       value: i,
       alignment: AlignmentDirectional.center,
-      child: Text(
+      child: AutoSizeText(
         i.toString(),
+        minFontSize: 5,
         style: text_1,
         textAlign: TextAlign.center,
       ),
@@ -325,6 +332,7 @@ List<Widget> buildInputFields(BuildContext context) {
   Widget title = SizedBox(
     width: getWidth(32.5, context),
     child: const Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         TitleText(text: "ProcessId"),
         TitleText(text: "Arrival Time"),
@@ -337,6 +345,7 @@ List<Widget> buildInputFields(BuildContext context) {
     Widget temp = SizedBox(
       width: getWidth(32.5, context),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           MyInputFieldWidget(i: i, j: 0),
           MyInputFieldWidget(i: i, j: 1),
@@ -365,10 +374,11 @@ class TitleText extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SizedBox(
-        width: 150,
+        width: getWidth(9, context),
         child: Center(
-          child: Text(
+          child: AutoSizeText(
             text,
+            minFontSize: 5,
             style: text_1,
           ),
         ),

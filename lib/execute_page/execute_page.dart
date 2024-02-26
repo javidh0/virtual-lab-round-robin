@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:os_virtual_lab/execute_page/widgets.dart';
 import 'package:os_virtual_lab/utils/funtions.dart';
@@ -29,8 +30,9 @@ class ExecutePageBody extends StatelessWidget {
         SizedBox(
           child: Padding(
             padding: const EdgeInsets.all(20),
-            child: Text(
+            child: AutoSizeText(
               "Operating System > Round Robin",
+              minFontSize: 5,
               style: text_1.copyWith(fontWeight: FontWeight.bold),
               textAlign: TextAlign.start,
             ),

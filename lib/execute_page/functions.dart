@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:os_virtual_lab/execute_page/widgets.dart';
 import 'package:os_virtual_lab/utils/funtions.dart';
@@ -9,15 +10,15 @@ void runItter(BuildContext context, int ptr, AnimationController controler) {
   controler.forward();
 
   Future.delayed(const Duration(seconds: 1), () {
-    context.read<RoundRobin>().inCPUProcess(context);
+    controler.reverse();
   });
-}
 
-void runReverse(BuildContext context, int ptr, AnimationController controler) {
-  controler.reverse();
-
-  Future.delayed(const Duration(seconds: 1), () {
-    context.read<RoundRobin>().incrementPointer(context);
+  Future.delayed(const Duration(seconds: 2), () {
+    try {
+      context.read<RoundRobin>().inCPUProcess(context);
+      context.read<RoundRobin>().incrementPointer(context);
+      // ignore: empty_catches
+    } catch (e) {}
   });
 }
 
@@ -40,8 +41,9 @@ List<Widget> rowBuilder(List<String> data, BuildContext context, bool prim,
             color: Colors.black,
           ),
         ),
-        child: Text(
+        child: AutoSizeText(
           data[i],
+          minFontSize: 5,
           style: text_1.copyWith(
             fontWeight: prim ? FontWeight.bold : FontWeight.normal,
           ),
