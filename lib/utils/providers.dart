@@ -54,6 +54,10 @@ class Process with ChangeNotifier {
     return controller[i][j];
   }
 
+  int getN() {
+    return controller.length;
+  }
+
   void getValue(int i, int j) {
     print(controller[i][j].text);
   }
@@ -67,12 +71,17 @@ class Process with ChangeNotifier {
     print(controller[i][2].text);
     return controller[i][2].text;
   }
+
+  String getId(int i) {
+    return controller[i][0].text;
+  }
 }
 
 class RoundRobin extends ChangeNotifier {
   int pointer = 0;
-  void incrementPointer({int i = 1}) {
+  void incrementPointer(BuildContext context, {int i = 1}) {
     pointer += i;
+    if (pointer >= context.read<Process>().getN()) pointer = 0;
     notifyListeners();
   }
 

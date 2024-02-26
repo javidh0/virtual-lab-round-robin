@@ -9,12 +9,11 @@ void runItter(BuildContext context, int ptr, AnimationController controler) {
   controler.forward();
   Future.delayed(const Duration(seconds: 1, milliseconds: 500), () {
     controler.reverse();
-    //while (controler.isAnimating) {}
   });
 
   Future.delayed(const Duration(seconds: 2), () {
-    context.read<RoundRobin>().incrementPointer();
     context.read<RoundRobin>().inCPUProcess(context);
+    context.read<RoundRobin>().incrementPointer(context);
   });
 }
 

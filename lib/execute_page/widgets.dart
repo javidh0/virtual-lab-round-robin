@@ -56,19 +56,14 @@ class _ProcessesDisplayState extends State<ProcessesDisplay>
         ),
         Column(
           children: [
-            Container(
-              width: getWidth(8, context),
-              height: getHeight(20, context),
-              color: Colors.amber,
-              child: Padding(
-                padding: EdgeInsets.only(top: getHeight(3, context)),
-                child: ProcessBox(
-                  opacity: opacity,
-                  name: "CPu",
-                  time: "10",
-                  isActive: true,
-                ),
-              ),
+            MyCPU(
+              opacity: opacity,
+              name: context
+                  .read<Process>()
+                  .getId(context.read<RoundRobin>().getPointer()),
+              time: context
+                  .read<Process>()
+                  .getBurst(context.read<RoundRobin>().getPointer()),
             ),
             Padding(
               padding: const EdgeInsets.all(8),
@@ -77,6 +72,36 @@ class _ProcessesDisplayState extends State<ProcessesDisplay>
           ],
         )
       ],
+    );
+  }
+}
+
+class MyCPU extends StatelessWidget {
+  const MyCPU({
+    super.key,
+    required this.opacity,
+    required this.name,
+    required this.time,
+  });
+
+  final double opacity;
+  final String name, time;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: getWidth(8, context),
+      height: getHeight(20, context),
+      color: Colors.amber,
+      child: Padding(
+        padding: EdgeInsets.only(top: getHeight(3, context)),
+        child: ProcessBox(
+          opacity: opacity,
+          name: name,
+          time: time,
+          isActive: true,
+        ),
+      ),
     );
   }
 }
