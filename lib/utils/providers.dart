@@ -35,15 +35,20 @@ class TableContent with ChangeNotifier {
     ct.clear();
     tat.clear();
     wt.clear();
-    int n = context.read<Process>().getN();
+    int n = context.read<Process>().id.length;
     for (int i = 0; i < n; i++) {
+      print(context.read<Process>().getArival(i));
       process.add(context.read<Process>().getId(i));
-      at.add(context.read<Process>().getId(i));
+      at.add(context.read<Process>().getArival(i));
       bt.add(context.read<Process>().getBurst(i));
       ct.add('a');
       tat.add('b');
       wt.add('c');
     }
+    // print(process);
+    // print(at);
+    // print(bt);
+    print("---");
   }
 
   List<String> getRow(int i) {
@@ -72,6 +77,7 @@ class Process with ChangeNotifier {
       id.add("P$i");
       arivalTime.add('0');
       burstTime.add('0');
+
       List<TextEditingController> temp = [
         TextEditingController(),
         TextEditingController(),
@@ -82,7 +88,6 @@ class Process with ChangeNotifier {
       controller.last[1].text = "0";
       controller.last[2].text = "0";
     }
-    context.read<TableContent>().init(context);
   }
 
   TextEditingController getController(int i, int j) {
@@ -127,14 +132,22 @@ class Process with ChangeNotifier {
 }
 
 class RoundRobin extends ChangeNotifier {
-  int pointer = 0, timePointer = 0;
+  int pointer = 0, timePointer = 0, processPointer = 0;
   void incrementPointer(BuildContext context, {int i = 1}) {
     pointer += i;
+    processPointer += i;
     if (context.read<Process>().getN() == 0) {
       context.read<Process>().setCompleted();
     }
-    if (pointer >= context.read<Process>().getN()) pointer = 0;
+    if (pointer >= context.read<Process>().getN()) {
+      pointer = 0;
+      processPointer = 0;
+    }
     notifyListeners();
+  }
+
+  String getCurrentProcess(BuildContext context) {
+    return context.read<Process>().id[pointer];
   }
 
   void inCPUProcess(BuildContext context) {
@@ -149,6 +162,7 @@ class RoundRobin extends ChangeNotifier {
       timePointer += qTime;
       context.read<Process>().setBurst(pointer, val);
     }
+    processPointer += 1;
 
     notifyListeners();
   }

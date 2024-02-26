@@ -200,17 +200,19 @@ class MyTableRow extends StatelessWidget {
     super.key,
     required this.data,
     this.isPrimary = false,
+    this.current = false,
   });
 
   final List<String> data;
   final bool isPrimary;
+  final bool current;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
-      children: rowBuilder(data, context, isPrimary),
+      children: rowBuilder(data, context, isPrimary, current: current),
     );
   }
 }

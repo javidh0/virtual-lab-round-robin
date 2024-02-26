@@ -17,7 +17,8 @@ void runItter(BuildContext context, int ptr, AnimationController controler) {
   });
 }
 
-List<Widget> rowBuilder(List<String> data, BuildContext context, bool prim) {
+List<Widget> rowBuilder(List<String> data, BuildContext context, bool prim,
+    {bool current = false}) {
   List<Widget> tr = [];
   for (int i = 0; i < data.length; i++) {
     Widget temp = Padding(
@@ -26,7 +27,9 @@ List<Widget> rowBuilder(List<String> data, BuildContext context, bool prim) {
         width: getWidth(10, context),
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: current && i == 0
+              ? const Color.fromARGB(255, 21, 213, 17)
+              : Colors.white,
           borderRadius: BorderRadius.circular(0),
           border: Border.all(
             width: 1,
@@ -71,6 +74,8 @@ List<Widget> builderTableRow(BuildContext context) {
   for (int i = 0; i < context.read<TableContent>().process.length; i++) {
     MyTableRow temp = MyTableRow(
       data: context.read<TableContent>().getRow(i),
+      current: context.watch<RoundRobin>().getCurrentProcess(context) ==
+          context.read<TableContent>().process[i],
     );
     tr.add(temp);
   }

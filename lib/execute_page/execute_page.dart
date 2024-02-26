@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:os_virtual_lab/execute_page/widgets.dart';
 import 'package:os_virtual_lab/utils/funtions.dart';
+import 'package:os_virtual_lab/utils/providers.dart';
 import 'package:os_virtual_lab/utils/text.dart';
+import 'package:provider/provider.dart';
 
 class ExecutePage extends StatelessWidget {
   const ExecutePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    context.read<TableContent>().init(context);
     return Scaffold(
       appBar: AppBar(
         leading: Container(
