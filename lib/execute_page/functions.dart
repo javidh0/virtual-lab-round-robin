@@ -7,12 +7,16 @@ import 'package:provider/provider.dart';
 
 void runItter(BuildContext context, int ptr, AnimationController controler) {
   controler.forward();
-  Future.delayed(const Duration(seconds: 1, milliseconds: 500), () {
-    controler.reverse();
-  });
 
-  Future.delayed(const Duration(seconds: 2), () {
+  Future.delayed(const Duration(seconds: 1), () {
     context.read<RoundRobin>().inCPUProcess(context);
+  });
+}
+
+void runReverse(BuildContext context, int ptr, AnimationController controler) {
+  controler.reverse();
+
+  Future.delayed(const Duration(seconds: 1), () {
     context.read<RoundRobin>().incrementPointer(context);
   });
 }

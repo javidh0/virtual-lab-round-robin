@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class InputData with ChangeNotifier {
-  int noOfProcess = 1;
+  int noOfProcess = 3;
   int quantumTime = 1;
 
   int getProcess() {
@@ -97,7 +97,7 @@ class Process with ChangeNotifier {
       controller.add(temp);
       controller.last[0].text = "P$i";
       controller.last[1].text = "0";
-      controller.last[2].text = "0";
+      controller.last[2].text = "10";
     }
   }
 

@@ -11,41 +11,8 @@ class ExecutePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     context.read<TableContent>().init(context);
-    return Scaffold(
-      appBar: AppBar(
-        leading: Container(
-          color: Colors.amber,
-          width: 100,
-          height: 100,
-          child: Center(
-            child: Text(
-              "LOGO",
-              style: text_1,
-            ),
-          ),
-        ),
-        title: Row(
-          children: [
-            const Expanded(
-              flex: 2,
-              child: SizedBox(),
-            ),
-            Expanded(
-              flex: 3,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text("Home", style: text_1),
-                  Text("Simulation", style: text_1),
-                  Text("About Us", style: text_1),
-                  Text("Contact", style: text_1),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-      body: const ExecutePageBody(),
+    return const Scaffold(
+      body: ExecutePageBody(),
     );
   }
 }

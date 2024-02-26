@@ -11,15 +11,18 @@ class RoundRobinPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Container(
-          color: Colors.amber,
-          width: 100,
-          height: 100,
-          child: Center(
-            child: Text(
-              "LOGO",
-              style: text_1,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: <Color>[Color(0xFFF7F4FA), Color(0xFF8B7C9E)],
             ),
+          ),
+        ),
+        leading: Center(
+          child: Image.network(
+            "https://d23qowwaqkh3fj.cloudfront.net/wp-content/uploads/2022/01/srm-logo.svg.gzip",
           ),
         ),
         title: Row(
@@ -34,7 +37,6 @@ class RoundRobinPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text("Home", style: text_1),
-                  Text("Simulation", style: text_1),
                   Text("About Us", style: text_1),
                   Text("Contact", style: text_1),
                 ],
@@ -191,6 +193,10 @@ class MySubmitButton extends StatelessWidget {
           onPressed: () {
             Navigator.pushNamed(context, "/execute_page");
           },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFF7F4EBD),
+            padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+          ),
           child: Text(
             "Next",
             style: text_1.copyWith(

@@ -16,6 +16,7 @@ class ProcessesDisplay extends StatefulWidget {
 class _ProcessesDisplayState extends State<ProcessesDisplay>
     with SingleTickerProviderStateMixin {
   double opacity = 0;
+  bool isDone = false;
   late AnimationController controler;
   late CurvedAnimation animator;
   @override
@@ -29,7 +30,9 @@ class _ProcessesDisplayState extends State<ProcessesDisplay>
     super.initState();
     animator.addListener(() {
       setState(() {
+        isDone = false;
         opacity = animator.value;
+        if (opacity == 1) isDone = true;
       });
     });
   }
@@ -59,7 +62,19 @@ class _ProcessesDisplayState extends State<ProcessesDisplay>
                   context.read<RoundRobin>().getPointer(),
                   controler,
                 );
+                Future.delayed(const Duration(seconds: 2), () {
+                  runReverse(
+                    context,
+                    context.read<RoundRobin>().getPointer(),
+                    controler,
+                  );
+                });
               },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF7F4EBD),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+              ),
               child: const Text("Next"),
             ),
             Row(
@@ -104,9 +119,12 @@ class MyCPU extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 167, 165, 169),
+        borderRadius: BorderRadius.circular(10),
+      ),
       width: getWidth(8, context),
       height: getHeight(20, context),
-      color: Colors.amber,
       child: Padding(
         padding: EdgeInsets.only(top: getHeight(3, context)),
         child: ProcessBox(
