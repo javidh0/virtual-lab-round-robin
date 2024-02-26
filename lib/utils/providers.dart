@@ -26,10 +26,44 @@ class InputData with ChangeNotifier {
   }
 }
 
+class TableContent with ChangeNotifier {
+  List<String> process = [], at = [], bt = [], ct = [], tat = [], wt = [];
+  void init(BuildContext context) {
+    process.clear();
+    at.clear();
+    bt.clear();
+    ct.clear();
+    tat.clear();
+    wt.clear();
+    int n = context.read<Process>().getN();
+    for (int i = 0; i < n; i++) {
+      process.add(context.read<Process>().getId(i));
+      at.add(context.read<Process>().getId(i));
+      bt.add(context.read<Process>().getBurst(i));
+      ct.add('a');
+      tat.add('b');
+      wt.add('c');
+    }
+  }
+
+  List<String> getRow(int i) {
+    List<String> tr = [
+      process[i],
+      at[i],
+      bt[i],
+      ct[i],
+      tat[i],
+      wt[i],
+    ];
+    return tr;
+  }
+}
+
 class Process with ChangeNotifier {
   late List<List<TextEditingController>> controller = [];
   List<String> id = [], arivalTime = [], burstTime = [];
-  void init(int n) {
+  bool isAllCompleted = false;
+  void init(int n, BuildContext context) {
     controller.clear();
     id.clear();
     arivalTime.clear();
@@ -48,6 +82,7 @@ class Process with ChangeNotifier {
       controller.last[1].text = "0";
       controller.last[2].text = "0";
     }
+    context.read<TableContent>().init(context);
   }
 
   TextEditingController getController(int i, int j) {
@@ -58,8 +93,8 @@ class Process with ChangeNotifier {
     return controller.length;
   }
 
-  void getValue(int i, int j) {
-    print(controller[i][j].text);
+  String getValue(int i, int j) {
+    return controller[i][j].text;
   }
 
   void setBurst(int i, double val) {
@@ -67,8 +102,22 @@ class Process with ChangeNotifier {
     notifyListeners();
   }
 
+  void setCompleted() {
+    isAllCompleted = true;
+  }
+
+  void removeProcess(int i) {
+    controller.removeAt(i);
+    id.removeAt(i);
+    arivalTime.removeAt(i);
+    burstTime.removeAt(i);
+  }
+
+  String getArival(int i) {
+    return controller[i][1].text;
+  }
+
   String getBurst(int i) {
-    print(controller[i][2].text);
     return controller[i][2].text;
   }
 
@@ -78,9 +127,12 @@ class Process with ChangeNotifier {
 }
 
 class RoundRobin extends ChangeNotifier {
-  int pointer = 0;
+  int pointer = 0, timePointer = 0;
   void incrementPointer(BuildContext context, {int i = 1}) {
     pointer += i;
+    if (context.read<Process>().getN() == 0) {
+      context.read<Process>().setCompleted();
+    }
     if (pointer >= context.read<Process>().getN()) pointer = 0;
     notifyListeners();
   }
@@ -89,8 +141,15 @@ class RoundRobin extends ChangeNotifier {
     int qTime = context.read<InputData>().quantumTime;
     double val =
         double.parse(context.read<Process>().getBurst(pointer)) - qTime;
-    if (val < 0) val = 0;
-    context.read<Process>().setBurst(pointer, val);
+    if (val <= 0) {
+      timePointer += int.parse(context.read<Process>().getBurst(pointer));
+      context.read<Process>().removeProcess(pointer);
+      pointer -= 1;
+    } else {
+      timePointer += qTime;
+      context.read<Process>().setBurst(pointer, val);
+    }
+
     notifyListeners();
   }
 
