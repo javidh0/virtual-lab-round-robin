@@ -73,9 +73,9 @@ List<Widget> builderTableRow(BuildContext context) {
   tr.add(head);
   for (int i = 0; i < context.read<TableContent>().process.length; i++) {
     MyTableRow temp = MyTableRow(
-      data: context.read<TableContent>().getRow(i),
+      data: context.watch<TableContent>().getRow(i),
       current: context.watch<RoundRobin>().getCurrentProcess(context) ==
-          context.read<TableContent>().process[i],
+          context.watch<TableContent>().process[i],
     );
     tr.add(temp);
   }

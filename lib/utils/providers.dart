@@ -41,14 +41,22 @@ class TableContent with ChangeNotifier {
       process.add(context.read<Process>().getId(i));
       at.add(context.read<Process>().getArival(i));
       bt.add(context.read<Process>().getBurst(i));
-      ct.add('a');
-      tat.add('b');
-      wt.add('c');
+      ct.add('-');
+      tat.add('-');
+      wt.add('-');
     }
-    // print(process);
-    // print(at);
-    // print(bt);
-    print("---");
+  }
+
+  void setCompletion(BuildContext context, String pro) {
+    for (int i = 0; i < process.length; i++) {
+      if (process[i] == pro) {
+        ct[i] = context.read<RoundRobin>().timePointer.toString();
+        tat[i] = (int.parse(ct[i]) - int.parse(at[i])).toString();
+        wt[i] = (int.parse(ct[i]) - int.parse(bt[i])).toString();
+        break;
+      }
+    }
+    notifyListeners();
   }
 
   List<String> getRow(int i) {
@@ -69,7 +77,10 @@ class Process with ChangeNotifier {
   List<String> id = [], arivalTime = [], burstTime = [];
   bool isAllCompleted = false;
   void init(int n, BuildContext context) {
+    context.read<RoundRobin>().pointer = 0;
+    context.read<RoundRobin>().timePointer = 0;
     controller.clear();
+    isAllCompleted = false;
     id.clear();
     arivalTime.clear();
     burstTime.clear();
@@ -109,6 +120,7 @@ class Process with ChangeNotifier {
 
   void setCompleted() {
     isAllCompleted = true;
+    notifyListeners();
   }
 
   void removeProcess(int i) {
@@ -132,21 +144,20 @@ class Process with ChangeNotifier {
 }
 
 class RoundRobin extends ChangeNotifier {
-  int pointer = 0, timePointer = 0, processPointer = 0;
+  int pointer = 0, timePointer = 0;
   void incrementPointer(BuildContext context, {int i = 1}) {
     pointer += i;
-    processPointer += i;
     if (context.read<Process>().getN() == 0) {
       context.read<Process>().setCompleted();
     }
     if (pointer >= context.read<Process>().getN()) {
       pointer = 0;
-      processPointer = 0;
     }
     notifyListeners();
   }
 
   String getCurrentProcess(BuildContext context) {
+    if (context.read<Process>().isAllCompleted) return "-1";
     return context.read<Process>().id[pointer];
   }
 
@@ -156,14 +167,18 @@ class RoundRobin extends ChangeNotifier {
         double.parse(context.read<Process>().getBurst(pointer)) - qTime;
     if (val <= 0) {
       timePointer += int.parse(context.read<Process>().getBurst(pointer));
+      context
+          .read<TableContent>()
+          .setCompletion(context, getCurrentProcess(context));
       context.read<Process>().removeProcess(pointer);
       pointer -= 1;
     } else {
       timePointer += qTime;
       context.read<Process>().setBurst(pointer, val);
     }
-    processPointer += 1;
-
+    if (context.read<Process>().getN() == 0) {
+      context.read<Process>().setCompleted();
+    }
     notifyListeners();
   }
 
