@@ -60,3 +60,19 @@ List<Widget> processBoxBuilder(BuildContext context, double opacity) {
   }
   return tr;
 }
+
+List<Widget> builderTableRow(BuildContext context) {
+  List<Widget> tr = [];
+  MyTableRow head = const MyTableRow(
+    data: ["Process", "AT", "BT", "CT", "TAT", "WT"],
+    isPrimary: true,
+  );
+  tr.add(head);
+  for (int i = 0; i < context.read<TableContent>().process.length; i++) {
+    MyTableRow temp = MyTableRow(
+      data: context.read<TableContent>().getRow(i),
+    );
+    tr.add(temp);
+  }
+  return tr;
+}
