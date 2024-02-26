@@ -11,6 +11,7 @@ void main(List<String> args) {
         ChangeNotifierProvider(create: (_) => InputData()),
         ChangeNotifierProvider(create: (_) => Process()),
         ChangeNotifierProvider(create: (_) => RoundRobin()),
+        ChangeNotifierProvider(create: (_) => TableContent()),
       ],
       child: const MyApp(),
     ),
