@@ -314,7 +314,8 @@ List<DropdownMenuItem<dynamic>> buildDropDownItems(int n) {
 }
 
 List<Widget> buildInputFields(BuildContext context) {
-  context.read<Process>().init(context.read<InputData>().getProcess());
+  context.read<Process>().init(context.read<InputData>().getProcess(), context);
+  context.read<TableContent>().init(context);
   List<Widget> tr = [];
   Widget title = SizedBox(
     width: getWidth(32.5, context),
